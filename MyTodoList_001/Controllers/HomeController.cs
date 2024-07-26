@@ -52,6 +52,14 @@ namespace MyTodoList_001.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        [Route("/delete/{id}")]
+        public IActionResult Delete(int id)
+        {
+            _todoItemService.Delete(id);
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Privacy()
         {
             return View();
