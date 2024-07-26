@@ -1,8 +1,28 @@
-﻿@{
+﻿@model MyTodoList_001.Models.TodoModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<thead>
+    <tr>
+        <th width="30px">#</th>
+        <th width="200px">Title</th>
+        <th width="600px">Description</th>
+        <th width="100px">Due Date</th>
+        <th width="150px">Reminder Time</th>
+    </tr>
+</thead>
+<tbody>
+    @{
+        var i = 0;
+    }
+    @foreach (var item in Model.Items)
+    {
+        <tr>
+            <td>@i</td>
+        </tr>
+
+        i++;
+    }
+</tbody>

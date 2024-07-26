@@ -14,32 +14,43 @@ namespace MyTodoList_001.Domain.Services
 
         public void Create(TodoItem item)
         {
-            throw new NotImplementedException();
+            _db.Add(item);
+            _db.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var t = _db.TodoItems.Find(id);
+            if (t != null)
+            {
+                _db.TodoItems.Remove(t);
+                _db.SaveChanges();
+            }
+            else
+            {
+                throw new NullReferenceException("Data Tidak Ditemukan");
+            }
         }
 
         public IEnumerable<TodoItem> GetAll()
         {
-            throw new NotImplementedException();
+            return _db.TodoItems.ToList();
         }
 
-        public TodoItem GetById(int id)
+        public TodoItem? GetById(int id)
         {
-            throw new NotImplementedException();
+            return _db.TodoItems.Find(id);
         }
 
-        public int? GetReminder()
+        public TodoItem? GetReminder()
         {
-            throw new NotImplementedException();
+            return _db.TodoItems.Where(x => x.ReminderTime != null).OrderBy(x => x.ReminderTime).FirstOrDefault();
         }
 
         public void Update(TodoItem item)
         {
-            throw new NotImplementedException();
+            _db.TodoItems.Update(item);
+            _db.SaveChanges();
         }
     }
 }
