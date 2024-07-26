@@ -1,7 +1,13 @@
+using MyTodoList_001.Domain.Repoitories;
+using MyTodoList_001.Domain.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<TodoDbContext>();
+builder.Services.AddScoped<ITodoItemServices, TodoItemService>();
 
 var app = builder.Build();
 
