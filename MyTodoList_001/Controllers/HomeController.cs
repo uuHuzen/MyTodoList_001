@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using MyTodoList_001.Domain.Entities;
 using MyTodoList_001.Domain.Repoitories;
+using MyTodoList_001.Domain.Services;
 using MyTodoList_001.Models;
 using System.Diagnostics;
 
@@ -8,18 +10,46 @@ namespace MyTodoList_001.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private TodoDbContext _db;
+        private ITodoItemServices _todoItemService;
 
-        public HomeController(ILogger<HomeController> logger, TodoDbContext db)
+        public HomeController(ILogger<HomeController> logger, ITodoItemServices todoItemService)
         {
             _logger = logger;
-            _db = db;
+            _todoItemService = todoItemService;
         }
 
         public IActionResult Index()
         {
-            var l = _db.TodoItems.ToList();
+            var model = new TodoModel();
+            model.Items = _todoItemService.GetAll();
+            return View(model);
+        }
+
+        [HttpGet("/add")]
+        public IActionResult Add()
+        {
             return View();
+        }
+
+        public IActionResult Create(TodoItem item)
+        {
+            _todoItemService.Create(item);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        [Route("/edit/{id}")]
+        public IActionResult Edit(int id)
+        {
+            var item = _todoItemService.GetById(id);
+            return View(item);
+        }
+
+        [HttpPost]
+        public IActionResult Update(TodoItem item)
+        {
+            _todoItemService.Update(item);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()

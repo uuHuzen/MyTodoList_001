@@ -14,6 +14,7 @@ namespace MyTodoList_001.Domain.Services
 
         public void Create(TodoItem item)
         {
+
             _db.Add(item);
             _db.SaveChanges();
         }
@@ -34,7 +35,7 @@ namespace MyTodoList_001.Domain.Services
 
         public IEnumerable<TodoItem> GetAll()
         {
-            return _db.TodoItems.ToList();
+            return _db.TodoItems.OrderBy(x => x.Id).ToList();
         }
 
         public TodoItem? GetById(int id)
@@ -49,7 +50,15 @@ namespace MyTodoList_001.Domain.Services
 
         public void Update(TodoItem item)
         {
-            _db.TodoItems.Update(item);
+            var itemDb = GetById(item.Id);
+            if (itemDb == null) { return; }
+
+            itemDb!.Title = item.Title; 
+            itemDb!.Description = item.Description;
+            itemDb!.DueDate = item.DueDate; 
+            itemDb!.ReminderTime = item.ReminderTime;
+            itemDb!.Status = item.Status;
+
             _db.SaveChanges();
         }
     }
